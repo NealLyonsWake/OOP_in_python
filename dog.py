@@ -31,13 +31,11 @@ class TalkingDog(Dog):
         return (f'Name: {self.name}, Breed: {self.breed}, Age: {self.age}')
 
     def __add__(self, other):
-        hybrid = self.breed + ' ' + other.breed
-        combinedAge = self.age + other.age
-        return (f"A strange, hybrid parent breed, a {hybrid} has been disovered that has a perfect combined age of it's children at {self.dog_years(combinedAge)}.")
-
+            return self.age + other.age
+        
 
 jasper = TalkingDog(name="Jasper", breed="Westy", greet="Hello", age=2)
-whisper = TalkingDog(name="Whisper", breed="Sheep", greet="Hello", age=2)
+whisper = TalkingDog(name="Whisper", breed="Sheep", greet="Hi", age=4)
 
 print(jasper.dog_years())
 print(jasper.bark())

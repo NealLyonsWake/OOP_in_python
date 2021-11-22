@@ -77,10 +77,10 @@ class SavingsAccount(CheckingAccount):
     def interestAdd(self, month_or_year):
         if month_or_year.lower() == "month":
             self.accountBalance = self.accountBalance + ((self.accountBalance / 100) * self.interestRate)
-            return (f'Monthly interest of {self.interestRate} was added to your account.\nYour balance is now £{self.accountBalance}.')
+            return (f'Monthly interest of {self.interestRate}% was added to your account.\nYour balance is now £{self.accountBalance}.')
         elif month_or_year.lower() == "year":
             self.accountBalance = self.accountBalance + (((self.accountBalance / 100) * self.interestRate) * 12)
-            return (f'Yearly interest of {self.interestRate * 12} was added to your account.\nYour balance is now £{self.accountBalance}.')
+            return (f'Yearly interest of {self.interestRate * 12}% was added to your account.\nYour balance is now £{self.accountBalance}.')
         else:
             return (f'{month_or_year} is not recognised as a command. Use "month" or "year".')
 
@@ -96,28 +96,21 @@ class StudentAccount(SavingsAccount):
         if self.age < 18 and amount > self.maxLimit:
             return (f'You are currently restricted to single transactions of £{self.maxLimit}.')
         else:
-            self.monthCharges[vendor] = amount
-            return (f'A new monthly charge has been setup for {vendor} at £{amount}.\nAll current vendor charges are: {self.monthCharges}.')
-        
+            return SavingsAccount.addMonthCharge(self, vendor, amount)
+                 
     def withdraw(self, amount):
         if self.age < 18 and amount > self.maxLimit:
             return (f'You are currently restricted to single transactions of £{self.maxLimit}.')
         else:
-            if self.accountBalance <= 0 or self.accountBalance < amount:
-                return (f"You have insufficient funds to withdraw £{amount}.\nYou only have £{self.accountBalance} and will need to deposit more funds.")
-            else:
-                time = datetime.datetime.now()
-                self.accountBalance = (self.accountBalance - amount)
-                self.statement.append(f'Withdrew £{amount} @ {time.strftime("%c")}. Balance: £{self.accountBalance}')
-                return (f"You withdrew £{amount} and your new balance is £{self.accountBalance}.")
-
+            return CheckingAccount.withdraw(self, amount)
+         
 
 myAccount = StudentAccount(
     accountHolder = "Christoph Waltz", accountNumber="0987", age=18
 )
 
 print(myAccount.deposit(2000))
-print(myAccount.withdraw(51))
+print(myAccount.withdraw(56))
 
 print(myAccount.interestAdd("Month"))
 
